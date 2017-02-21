@@ -10,9 +10,6 @@
 		<!--CSS-->
 		<link rel="stylesheet" media="screen" href="css/main.css" />
 		<link rel="icon" href="../favicon.ico" />
-		<style>
-			#contextMenu {min-width: 10%; max-width: 50%;position: absolute;}
-		</style>
 		<!--Scripts-->
 		<script src="js/jCode-1.5.js"></script>
 		<script src="js/jquery-3.1.0.min.js"></script>
@@ -56,11 +53,13 @@
 					<div>
 						<textarea rows="1" cols="25" id="autoNC" placeholder="Notes and Comments..."></textarea><br><br>
 						<div class="score">
-							<span>Gear(s): </span><span id="gearCountAuto">0</span><br>
-							<span>
-								<span id="gearCountAUP" class="countBTN">&uarr;</span>
-								<span id="gearCountADN" class="countBTN">&darr;</span>
-							</span>
+							<div>
+								<span>Gear(s): </span><span id="gearCountAuto">0</span><br>
+								<span>
+									<span id="gearCountAUP" class="countBTN">&uarr;</span>
+									<span id="gearCountADN" class="countBTN">&darr;</span>
+								</span>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -69,11 +68,20 @@
 					<div>
 						<textarea rows="1" cols="25" id="teleNC" placeholder="Notes and Comments..."></textarea><br><br>
 						<div class="score">
-							<span>Gear(s): </span><span id="gearCountTele">0</span><br>
-							<span>
-								<span id="gearCountTUP" class="countBTN">&uarr;</span>
-								<span id="gearCountTDN" class="countBTN">&darr;</span>
-							</span>
+							<div>
+								<span>Gear(s): </span><span id="gearCountTele">0</span><br>
+								<span>
+									<span id="gearCountTUP" class="countBTN">&uarr;</span>
+									<span id="gearCountTDN" class="countBTN">&darr;</span>
+								</span>
+							</div>
+							<div>
+								<span>Climbing</span><br>
+								<span>
+									<label for="climbYes">Yes</label><input type="radio" name="climb" id="climbYes" checked />
+									<label for="climbNo">No</label><input type="radio" name="climb" id="climbNo" />
+								</span>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -81,6 +89,9 @@
 					<h3>Settings <span id="closeSettings">&times;</span></h3>
 					<div>
 						<span>Animations: </span><span class="switch" id="animIN"><span class="slider" id="animSUB"></span></span>
+					</div>
+					<div>
+						<span>Autosave Timer: </span><input type="number" class="noNum" id="autosaveTimer" /><label for="autosaveTimer">Seconds</label>
 					</div>
 				</div>
 			</section>

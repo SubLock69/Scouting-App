@@ -42,16 +42,16 @@ JC(function(){
 	var AG = 0, TG = 0;
 	//Counting functions
 	JC('#gearCountAUP').on('click',function(){
-		countUp('gearCountAuto');
+		countUp('gearCountAuto',0,25);
 	});
 	JC('#gearCountADN').on('click',function(){
-		countDown('gearCountAuto');
+		countDown('gearCountAuto',0,25);
 	});
 	JC('#gearCountTUP').on('click',function(){
-		countUp('gearCountTele');
+		countUp('gearCountTele',0,25);
 	});
 	JC('#gearCountTDN').on('click',function(){
-		countDown('gearCountTele');
+		countDown('gearCountTele',0,25);
 	});
 	//Settings Tab
 	JC('#settingsBTN').click(function(){
@@ -212,7 +212,8 @@ JC(function(){
 			autoNC = document.getElementById('autoNC'),
 			teleNC = document.getElementById('teleNC'),
 			autoGear = document.getElementById('gearCountAuto'),
-			teleGear = document.getElementById('gearCountTele');
+			teleGear = document.getElementById('gearCountTele'),
+			climb;
 		//Check for radio button checked
 		if(document.getElementById('redA').checked) {
 			ally = true;//true = red
@@ -220,6 +221,12 @@ JC(function(){
 		} else if(document.getElementById('blueA').checked) {
 			ally = false;//false = blue
 			allyCol = "blue";
+		}
+		//Check for climb buttons
+		if(document.getElementById('climbYes').checked) {
+			climb = "yes";
+		} else if(document.getElementById('climbNo').checked) {
+			climb = "no";
 		}
 		//Validate data
 		if(name.value === "" || name.value === null) {
@@ -241,26 +248,31 @@ JC(function(){
 			team : team.value,
 			ally : allyCol,
 			gearAuto : autoGear.textContent,
-			gearTele : teleGear.textContent
+			gearTele : teleGear.textContent,
+			climb : climb
 		}
 		//Compile Notes and Comments differently, will export into text file separately
 		this.NC = ("Auto Notes & Comments:\n\n" + autoNC.value + "\n\nTele-op Notes & Comments:\n\n" + teleNC.value);
+		console.log(this.JSON);
 		toCSV(this.JSON);
 		toTextFile(this.NC);
 	}
 	function toCSV(JSON) {
-		
+		var fs = requestFS();
+		var CSV = "";
+		writeFile(fs.files.getFile("match_" + tableJSON.JSON.match + "_team_" + tableJSON.JSON.team + ".csv",{create: true, exclusive: false}),CSV);
 	}
 	function toTextFile(TEXT) {
-		
+		var fs = requestFS();
+		writeFile(fs.files.getFile("match_" + tableJSON.JSON.match + "_team_" + tableJSON.JSON.team + "_NC.txt",{create: true, exclusive: false}),tableJSON.NC);
 	}
-	function countUp(elem) {
+	function countUp(elem,floor,ceil) {
 		var num = document.getElementById(elem).textContent;
-		if(num < 0) {
+		if(num < floor) {
 			num = 0;
 			JC('#' + elem).text(num);
 			return;
-		} else if(num >= 25) {
+		} else if(num >= ceil) {
 			num = 25;
 			JC('#' + elem).text(num);
 			return;
@@ -270,13 +282,13 @@ JC(function(){
 			return;
 		}
 	}
-	function countDown(elem) {
+	function countDown(elem,floor,ceil) {
 		var num = document.getElementById(elem).textContent;
-		if(num <= 0) {
+		if(num <= floor) {
 			num = 0;
 			JC('#' + elem).text(num);
 			return;
-		} else if(num > 25) {
+		} else if(num > ceil) {
 			num = 25;
 			JC('#' + elem).text(num);
 			returnl
@@ -336,7 +348,7 @@ JC(function(){
 		}, onErrorReadFile);
 	}
 	function requestFS() {
-		window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fs) {
+		return window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fs) {
 
 			console.log('file system open: ' + fs.name);
 			fs.files.getFile("test.txt", { create: true, exclusive: false }, function (fileEntry) {

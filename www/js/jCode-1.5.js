@@ -77,11 +77,6 @@
 	//Important to make sure jCode is set to the window
 	window.$ = window.jCode = window.prototype = jCode;
 	//Build Library
-	/*
-	for(var i = 0; i < GQuery.length; i++) {
-		GQuery[i].;
-	}
-	*/
 	jCode.extend({
 		text : function(value) {
 			if(value === null) {
@@ -292,19 +287,29 @@
 		},
 		toggleClass : function(name) {
 			for(var i = 0; i < GQuery.length; i++) {
-				if(GQuery[i].classList.contains(name)) {
-					GQuery[i].classList.remove(name);
+				if(arguments.length > 1) {
+					for(var j = 0; j < arguments.length; j++) {
+						if(GQuery[i].classList.contains(arguments[j])) {
+							GQuery[i].classList.remove(arguments[j]);
+						} else {
+							GQuery[i].classList.add(arguments[j]);
+						}
+					}
 				} else {
-					GQuery[i].classList.add(name);
+					if(GQuery[i].classList.contains(name)) {
+						GQuery[i].classList.remove(name);
+					} else {
+						GQuery[i].classList.add(name);
+					}
 				}
 			}
 			return this;
 		},
 		addClass : function(name) {
 			for(var i = 0; i < GQuery.length; i++) {
-				if (typeof name === "object") {
-					for (var j = 0; j < name.length; j++) {
-						GQuery[i].classList.add(name[j]);
+				if (arguments.length > 1) {
+					for (var j = 0; j < arguments.length; j++) {
+						GQuery[i].classList.add(arguments[j]);
 					}
 				} else {
 					GQuery[i].classList.add(name);
@@ -314,9 +319,9 @@
 		},
 		removeClass : function(name) {
 			for(var i = 0; i < GQuery.length; i++) {
-				if (typeof name === "object") {
-					for (var j = 0; j < name.length; j++) {
-						GQuery[i].classList.remove(name[j]);
+				if (arguments.length > 1) {
+					for (var j = 0; j < arguments.length; j++) {
+						GQuery[i].classList.remove(arguments[j]);
 					}
 				} else {
 					GQuery[i].classList.remove(name);
@@ -372,23 +377,41 @@
 			}
 			return this;
 		},
-		append : function(text) {
+		append : function(text, block) {
+			//Create elements
+			var span = document.createElement("span");
+			var div = document.createElement("div");
+			//Append text
+			span.innerHTML = text;
+			div.innerHTML = text;
 			for(var i = 0; i < GQuery.length; i++) {
-				if (GQuery[i] === "") {
-					GQuery[i].innerHTML = text;
+				if(block === null) {
+					//Default inline
+					block = false;
+				}
+				if (block) {
+					if(GQuery[i].value === "") {
+						GQuery[i].innerHTML = text;
+					} else {
+						GQuery[i].appendChild(div);
+					}
 				} else {
-					GQuery[i].innerHTML += text;
+					if(GQuery[i].value === "") {
+						GQuery[i].innerHTML = text;
+					} else {
+						GQuery[i].appendChild(span);
+					}
 				}
 			}
 			return this;
 		},
 		prepend : function(text, block) {
 			//Create elements
-				var span = document.createElement("span");
-				var div = document.createElement("div");
-				//Append text
-				span.innerHTML = text;
-				div.innerHTML = text;
+			var span = document.createElement("span");
+			var div = document.createElement("div");
+			//Append text
+			span.innerHTML = text;
+			div.innerHTML = text;
 			for(var i = 0; i < GQuery.length; i++) {
 				if(block === null) {
 					//Default inline
@@ -410,194 +433,32 @@
 			}
 			return this;
 		},
-		CSSlist : [
-			"align-content",
-			"align-items",
-			"align-self",
-			"all",
-			"animation",
-			"animation-delay",
-			"animation-direction",
-			"animation-duration",
-			"animation-fill-mode",
-			"animation-iteration-count",
-			"animation-name",
-			"animation-play-state",
-			"animation-timing-function",
-			"backface-visibility",
-			"background",
-			"background-attachment",
-			"background-blend-mode",
-			"background-clip",
-			"background-color",
-			"background-image",
-			"background-origin",
-			"background-position",
-			"background-repeat",
-			"background-size",
-			"border",
-			"border-bottom",
-			"border-bottom-color",
-			"border-bottom-left-radius",
-			"border-bottom-right-radius",
-			"border-bottom-style",
-			"border-bottom-width",
-			"border-collapse",
-			"border-color",
-			"border-image",
-			"border-image-outset",
-			"border-image-repeat",
-			"border-image-slice",
-			"border-image-source",
-			"border-image-width",
-			"border-left",
-			"border-left-color",
-			"border-left-style",
-			"border-left-width",
-			"border-radius",
-			"border-right",
-			"border-right-color",
-			"border-right-style",
-			"border-right-width",
-			"border-spacing",
-			"border-style",
-			"border-top",
-			"border-top-color",
-			"border-top-left-radius",
-			"border-top-right-radius",
-			"border-top-style",
-			"border-top-width",
-			"border-width",
-			"bottom",
-			"box-shadow",
-			"box-sizing",
-			"caption-size",
-			"clear",
-			"clip",
-			"color",
-			"column-count",
-			"column-fill",
-			"column-gap",
-			"column-rule",
-			"column-rule-color",
-			"column-rule-style",
-			"column-rule-width",
-			"column-span",
-			"column-width",
-			"columns",
-			"content",
-			"counter-increment",
-			"counter-reset",
-			"cursor",
-			"direction",
-			"display",
-			"empty-cells",
-			"filter",
-			"flex",
-			"flex-basis",
-			"flex-direction",
-			"flex-flow",
-			"flex-grow",
-			"flex-shrink",
-			"flex-wrap",
-			"float",
-			"font",
-			"font-family",
-			"font-size",
-			"font-size-adjust",
-			"font-stretch",
-			"font-style",
-			"font-variant",
-			"font-weight",
-			"hanging-punctuation",
-			"height",
-			"justify-content",
-			"left",
-			"letter-spacing",
-			"line-height",
-			"list-style",
-			"list-style-image",
-			"list-style-position",
-			"list-style-type",
-			"margin",
-			"margin-bottom",
-			"margin-left",
-			"margin-right",
-			"margin-top",
-			"max-height",
-			"max-width",
-			"min-height",
-			"min-width",
-			"nav-down",
-			"nav-index",
-			"nav-left",
-			"nav-right",
-			"nav-up",
-			"opacity",
-			"order",
-			"outline",
-			"outline-color",
-			"outline-offset",
-			"outline-style",
-			"outline-width",
-			"overflow",
-			"overflow-x",
-			"overflow-y",
-			"padding",
-			"padding-bottom",
-			"padding-left",
-			"padding-right",
-			"padding-top",
-			"page-break-after",
-			"page-break-before",
-			"page-break-inside",
-			"perspective",
-			"perspective-origin",
-			"position",
-			"quotes",
-			"resize",
-			"right",
-			"tab-size",
-			"table-layout",
-			"text-align",
-			"text-align-last",
-			"text-decoration",
-			"text-decoration-color",
-			"text-decoration-line",
-			"text-decoration-style",
-			"text-indent",
-			"text-justify",
-			"text-overflow",
-			"text-shadow",
-			"text-transform",
-			"top",
-			"transform",
-			"trasnform-origin",
-			"transform-style",
-			"transition",
-			"transition-delay",
-			"transition-duration",
-			"transition-property",
-			"transition-timing-function",
-			"unicode-bidi",
-			"user-select",
-			"vertical-align",
-			"visibility",
-			"white-space",
-			"width",
-			"word-break",
-			"word-spacing",
-			"word-wrap",
-			"z-index",
-		]
+		toggleAttr : function(name,value, optval) {
+			for(var i = 0; i < GQuery.length; i++) {
+				if(optval !== null) {
+					if(GQuery[i].getAttribute(name) === value) {
+						GQuery[i].setAttribute(name,optval);
+					} else {
+						GQuery[i].setAttribute(name,value);
+					}
+				} else {
+					if(GQuery[i].getAttribute(name) === value) {
+						GQuery[i].setAttribute(name,'');
+					} else {
+						GQuery[i].setAttribute(name,value);
+					}
+				}
+			}
+			return this;
+		},
+		CSSlist : ["align-content","align-items","align-self","all","animation","animation-delay","animation-direction","animation-duration","animation-fill-mode","animation-iteration-count","animation-name","animation-play-state","animation-timing-function","backface-visibility","background","background-attachment","background-blend-mode","background-clip","background-color","background-image","background-origin","background-position","background-repeat","background-size","border","border-bottom","border-bottom-color","border-bottom-left-radius","border-bottom-right-radius","border-bottom-style","border-bottom-width","border-collapse","border-color","border-image","border-image-outset","border-image-repeat","border-image-slice","border-image-source","border-image-width","border-left","border-left-color","border-left-style","border-left-width","border-radius","border-right","border-right-color","border-right-style","border-right-width","border-spacing","border-style","border-top","border-top-color","border-top-left-radius","border-top-right-radius","border-top-style","border-top-width","border-width","bottom","box-shadow","box-sizing","caption-size","clear","clip","color","column-count","column-fill","column-gap","column-rule","column-rule-color","column-rule-style","column-rule-width","column-span","column-width","columns","content","counter-increment","counter-reset","cursor","direction","display","empty-cells","filter","flex","flex-basis","flex-direction","flex-flow","flex-grow","flex-shrink","flex-wrap","float","font","font-family","font-size","font-size-adjust","font-stretch","font-style","font-variant","font-weight","hanging-punctuation","height","justify-content","left","letter-spacing","line-height","list-style","list-style-image","list-style-position","list-style-type","margin","margin-bottom","margin-left","margin-right","margin-top","max-height","max-width","min-height","min-width","nav-down","nav-index","nav-left","nav-right","nav-up","opacity","order","outline","outline-color","outline-offset","outline-style","outline-width","overflow","overflow-x","overflow-y","padding","padding-bottom","padding-left","padding-right","padding-top","page-break-after","page-break-before","page-break-inside","perspective","perspective-origin","position","quotes","resize","right","tab-size","table-layout","text-align","text-align-last","text-decoration","text-decoration-color","text-decoration-line","text-decoration-style","text-indent","text-justify","text-overflow","text-shadow","text-transform","top","transform","trasnform-origin","transform-style","transition","transition-delay","transition-duration","transition-property","transition-timing-function","unicode-bidi","user-select","vertical-align","visibility","white-space","width","word-break","word-spacing","word-wrap","z-index"]
 	},"lib");
 	//Build functions that don't use selector(s)
-	
 	//Math functions
 	jCode.math = {
 		random : function (floor, ceil) {
 			var randomNumber = Math.floor((Math.random() * ceil) + floor);
-			return randomNumber;
+			return randomNumber && this;
 		},
 		//Missing sides must be deemed null when used
 		triSides : function (right, a, b, c, A, B, C) {
@@ -627,7 +488,7 @@
 		}
 	};
 	//Check console to see userAgent details
-	jCode.detectOS = function (callback) {
+	jCode.detectOS = function () {
 		var agent = navigator.userAgent,
 			os = null,
 			cos = ["Android", "iOS", "Mac OS X", "Mac OS", "Linux", "Windows 10", "Windows 8.1", "Windows 8", "Windows 7", "Windows Vista", "Windows XP"],
@@ -640,25 +501,18 @@
 				break;
 			}
 		}
-		if(jCode.checkCallback(callback)) {
-			callback();
-		} else {
-			console.log('jCode\n\nCallback not a function, not calling');
-		}
 		return os;
 	};
 	jCode.concat = function () {
-		var i = 1, args = arguments, conc = args[0].value;
-		for (i; i < args.length; i++) {
-			conc += args[i].value;
+		var args = arguments, argArr = [], concat = "";
+		for(var i = 0; i < args.length; i++) {
+			argArr.push(String(args[i]));
 		}
-		return conc;
-	};
-	jCode.parseHTML = function (text){
-		//Create a body element to reference the parsed HTML text
-		var body = document.createElement('BODY');
-		body.innerHTML = text;
-		return body.innerHTML;
+		//Now that array is built, loop through the already parsed strings and concatenate them
+		for(var i = 0; i < argArr.length; i++) {
+			concat = concat + argArr[i];
+		}
+		return concat;
 	};
 	jCode.ajax = {
 		reqObj : function() {
@@ -727,4 +581,171 @@
 			xobj.send(filter);
 		}
 	};
+	jCode.wait = function(func,time) {
+		if(typeof func !== "function") {
+			console.log('Supplied parameter isn\'t a function!');
+			return;
+		} else {
+			if(time === null) {
+				time = 1000;
+			}
+			return setTimeout(func,time);
+		}
+	};
+	jCode.loopWait = function(func,time) {
+		if(typeof func !== "function") {
+			if(typeof func === "string" && time === null && func === "clear") {
+				return clearInterval(jCode.looping);
+			}
+			console.log('Supplied parameter isn\'t a function!');
+			return;
+		} else {
+			console.log('Looping Timed Function Stored under jCode.looping, using clearInterval($.looping) or $.loopWait(\'clear\') to clear!');
+			if(time === null) {
+				time = 1000;
+			}
+			jCode.looping = setInterval(func,time);
+			return this;
+		}
+	};
+	jCode.timing = {
+		setFunc : function(func,time) {
+			this.func = func;
+			this.time = time;
+		},
+		clearFunc : function() {
+			delete this.func;
+			delete this.time;
+		},
+		exec : function(type) {
+			if(type === null) {
+				type = true;
+			}
+			if(type) {
+				//Single waited execute
+				setTimeout(this.func,this.time);
+			} else {
+				//Looping waited execute
+				jCode.looping = setInterval(this.func,this.time);
+			}
+		},
+		clearLoop : function() {
+			clearInterval(jCode.looping);
+		}
+	};
+	jCode.objectCreator = {
+		globalObj : function(obj,name) {
+			if(typeof obj !== "object") {
+				console.log('objCreate: Object input not valid!');
+				return this;
+			} else {
+				window[name] = obj;
+				return this;
+			}
+		},
+		//Please note that this is not set under jCode.mod where plugins are stored!
+		libObj : function(obj,name) {
+			if(typeof obj !== "object") {
+				console.log('objCreate: Object input not valid!');
+				return this;
+			} else {
+				jCode[name] = obj;
+				return this;
+			}
+		},
+		writeObj : function(data, objName) {
+			if(objName === null) {
+				//Default to jCode.mod.objCreate
+				jCode.mod.objCreate = new Object.create(data);
+			} else {
+				//assume accessing anything but library object
+				window[objName] = new Object.create(data);
+			}
+		},
+		readObj : function(objName) {
+			if(objName === null) {
+				return jCode.mod.objCreate;
+			} else {
+				return window[objName];
+			}
+		},
+		deleteObj : function(name,location) {
+			if(location === null) {
+				location = true;
+			} else {
+				location = false;
+				if(location) {
+					location = jCode.mod;
+				} else {
+					location = window;
+				}
+				delete location[name];
+			}
+		}
+	};
+	jCode.include = function(type) {
+		//use arguments passed through to include scripts
+		var args = arguments || {}, include = [];
+		if(type === null) {
+			console.log('Please define a type as defaulting will cause bugs');
+			return false;
+		}
+		if(type === "js") {
+			if(args === {} || args === null) {
+				console.log("No names input, returning false");
+				return false;
+			} else {
+				for(var i = 1; i < args.length; i++) {
+					//Start building array of scripts to include in page
+					include.push(args[i]);
+				}
+				console.log(include);
+				//Run through include array and apply them to a script tag
+				(function appendScript() {
+					if(document.body) {
+						for(var i = 0; i < include.length; i++) {
+							var script = document.createElement('script');
+							console.log(include[i]);
+							script.setAttribute('src',include[i]);
+							document.body.appendChild(script);
+						}
+					} else {
+						window.requestAnimationFrame(appendScript);
+					}
+				})();
+			}
+		} else if(type === "css") {
+			if(args === {} || args === null) {
+				console.log("No names input, returning false");
+				return false;
+			} else {
+				var media;
+				if(typeof args[1] !== "number") {
+					media = 'screen';
+					for(var i = 1; i < args.length; i++) {
+						include.push(args[i]);
+					}
+				} else {
+					media = args[1];
+					for(var i = 2; i < args.length; i++) {
+						include.push(args[i]);
+					}
+				}
+				
+				for(var i = 0; i < include.length; i++) {
+					var link = document.createElement('link');
+					link.setAttribute('media',media);
+					link.setAttribute('rel','stylesheet');
+					link.setAttribute('href',include[i]);
+					document.getElementsByTagName('head')[0].appendChild(link);
+				}
+			}
+		} else if(type === "other") {
+			
+		} else {
+			console.log('Type doesn\'t exist');
+			return false;
+		}
+		
+	}
 })(typeof window !== "undefined" ? window : this);
