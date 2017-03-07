@@ -6,7 +6,7 @@
 			Issue: JS File exploring is very hard.
 			Containers: #wrapper, .container, span > .countBTN
 		-->
-		<title>Scouting</title>
+		<title>Shark Scout</title>
 		<!--CSS-->
 		<link rel="stylesheet" media="screen" href="css/main.css" />
 		<link rel="icon" href="../favicon.ico" />
@@ -14,6 +14,7 @@
 		<script src="js/jCode-1.5.js"></script>
 		<script src="js/jquery-3.1.0.min.js"></script>
 		<script src="js/main.js"></script>
+		<script src="js/file.js"></script>
 	</head>
 	<body>
 		<!--Wrapper-->
@@ -36,7 +37,7 @@
 			<!--Content Container-->
 			<section class="container" id="main">
 				<div id="home">
-					<h3>XYZ-Scout</h3>
+					<h3>Shark Scout</h3>
 					<div>
 						<center>
 							<input type="text" size="20" id="name" placeholder="Name..." /><br>
@@ -60,6 +61,12 @@
 									<span id="gearCountADN" class="countBTN">&darr;</span>
 								</span>
 							</div>
+							<div>
+								<span>Mobility: </span><input type="checkbox" id="mobile" />
+							</div>
+							<div>
+								<span>Fuel Scored: </span><input type="checkbox" id="shotFuel" />
+							</div>
 						</div>
 					</div>
 				</div>
@@ -82,6 +89,12 @@
 									<label for="climbNo">No</label><input type="radio" name="climb" id="climbNo" />
 								</span>
 							</div>
+							<div>
+								<span>Fuel Scored: </span>
+								<label for="ball1">1</label><input type="radio" id="ball1" name="ball" checked />
+								<label for="ball2">2</label><input type="radio" id="ball2" name="ball" />
+								<label for="ball3">3</label><input type="radio" id="ball3" name="ball" />
+							</div>
 						</div>
 					</div>
 				</div>
@@ -91,7 +104,7 @@
 						<span>Animations: </span><span class="switch" id="animIN"><span class="slider" id="animSUB"></span></span>
 					</div>
 					<div>
-						<span>Autosave Timer: </span><input type="number" class="noNum" id="autosaveTimer" /><label for="autosaveTimer">Seconds</label>
+						<span>Autosave Timer: </span><input type="number" class="noNum" id="autosaveTimer" value="60" /><label for="autosaveTimer">Seconds</label>
 					</div>
 				</div>
 			</section>
