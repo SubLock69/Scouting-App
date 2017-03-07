@@ -2,6 +2,7 @@
 var JC = jCode.noConflict();
 var JQ = jQuery.noConflict();
 var anim = true;
+var fileName;
 //Normal Page load using JCode
 JC(function(){
 	JC('#navBTN').click(function(){
@@ -42,16 +43,16 @@ JC(function(){
 	var AG = 0, TG = 0;
 	//Counting functions
 	JC('#gearCountAUP').on('click',function(){
-		countUp('gearCountAuto',0,25);
+		countUp('gearCountAuto',0,3);
 	});
 	JC('#gearCountADN').on('click',function(){
-		countDown('gearCountAuto',0,25);
+		countDown('gearCountAuto',0,3);
 	});
 	JC('#gearCountTUP').on('click',function(){
-		countUp('gearCountTele',0,25);
+		countUp('gearCountTele',0,15);
 	});
 	JC('#gearCountTDN').on('click',function(){
-		countDown('gearCountTele',0,25);
+		countDown('gearCountTele',0,15);
 	});
 	//Settings Tab
 	JC('#settingsBTN').click(function(){
@@ -107,7 +108,7 @@ JC(function(){
 	//Autosave timer
 	var autosave = setInterval(function(){
 		tableJSON(true);
-	},10000), timer;
+	},60000), timer;
 	document.getElementById('autosaveTimer').onblur = function(){
 		clearInterval(autosave);
 		autosaveTimer();
@@ -225,7 +226,7 @@ JC(function(){
 			teleNC = document.getElementById('teleNC'),
 			autoGear = document.getElementById('gearCountAuto'),
 			teleGear = document.getElementById('gearCountTele'),
-			climb;
+			climb,autoFuelScore,mobile,teleFuelScore;
 		if(noValidate) {
 			//Check for radio button checked
 			if(document.getElementById('redA').checked) {
@@ -241,6 +242,26 @@ JC(function(){
 			} else if(document.getElementById('climbNo').checked) {
 				climb = "no";
 			}
+			//Check auto fuel scoring
+			if(document.getElementById('shotFuel').checked) {
+				autoFuelScore = "yes";
+			} else {
+				autoFuelScore = "no";
+			}
+			//Check tele fuel scoring
+			if(document.getElementById('ball1').checked) {
+				teleFuelScore = "no";
+			} else if(document.getElementById('ball2').checked) {
+				teleFuelScore = "some";
+			} else if(document.getElementById('ball3').checked) {
+				teleFuelScore = "tons";
+			}
+			//Check auto mobility
+			if(document.getElementById('mobile').checked) {
+				mobile = "yes";
+			} else {
+				mobile = "no";
+			}
 			//Build JSON object
 			this.JSON = {
 				name : name.value,
@@ -249,7 +270,10 @@ JC(function(){
 				ally : allyCol,
 				gearAuto : autoGear.textContent,
 				gearTele : teleGear.textContent,
-				climb : climb
+				climb : climb,
+				ballAuto : autoFuelScore,
+				ballTele : teleFuelScore,
+				mobile : mobile
 			}
 			//Compile Notes and Comments differently, will export into text file separately
 			this.NC = ("Auto Notes & Comments:\n\n" + autoNC.value + "\n\nTele-op Notes & Comments:\n\n" + teleNC.value);
@@ -287,6 +311,26 @@ JC(function(){
 				autosaveTimer();
 				return false;
 			}
+			//Check auto fuel scoring
+			if(document.getElementById('shotFuel').checked) {
+				autoFuelScore = "yes";
+			} else {
+				autoFuelScore = "no";
+			}
+			//Check tele fuel scoring
+			if(document.getElementById('ball1').checked) {
+				teleFuelScore = "no";
+			} else if(document.getElementById('ball2').checked) {
+				teleFuelScore = "some";
+			} else if(document.getElementById('ball3').checked) {
+				teleFuelScore = "tons";
+			}
+			//Check auto mobility
+			if(document.getElementById('mobile').checked) {
+				mobile = "yes";
+			} else {
+				mobile = "no";
+			}
 			//Build JSON object
 			this.JSON = {
 				name : name.value,
@@ -295,7 +339,10 @@ JC(function(){
 				ally : allyCol,
 				gearAuto : autoGear.textContent,
 				gearTele : teleGear.textContent,
-				climb : climb
+				climb : climb,
+				ballAuto : autoFuelScore,
+				ballTele : teleFuelScore,
+				mobile : mobile
 			}
 			//Compile Notes and Comments differently, will export into text file separately
 			this.NC = ("Auto Notes & Comments:\n\n" + autoNC.value + "\n\nTele-op Notes & Comments:\n\n" + teleNC.value);
@@ -324,11 +371,11 @@ JC(function(){
 	function countUp(elem,floor,ceil) {
 		var num = document.getElementById(elem).textContent;
 		if(num < floor) {
-			num = 0;
+			num = floor;
 			JC('#' + elem).text(num);
 			return;
 		} else if(num >= ceil) {
-			num = 25;
+			num = ceil;
 			JC('#' + elem).text(num);
 			return;
 		} else {
@@ -340,11 +387,11 @@ JC(function(){
 	function countDown(elem,floor,ceil) {
 		var num = document.getElementById(elem).textContent;
 		if(num <= floor) {
-			num = 0;
+			num = floor;
 			JC('#' + elem).text(num);
 			return;
 		} else if(num > ceil) {
-			num = 25;
+			num = ceil;
 			JC('#' + elem).text(num);
 			returnl
 		} else {
@@ -357,67 +404,4 @@ JC(function(){
 	JC('#animIN').css('background-color','#00e6e2');
 	JC('#animSUB').css('transform','translate(15px)');
 	home();
-	//PhoneGap file API implementation
-	///*
-	function onErrorReadFile() {
-		console.log('Unable to read file');
-	}
-	function onErrorLoadFs() {
-		console.log('Unable to load file system');
-	}
-	function onErrorCreateFile() {
-		console.log('Unable to create file');
-	}
-	function writeFile(fileEntry, dataObj) {
-		// Create a FileWriter object for our FileEntry (log.txt).
-		fileEntry.createWriter(function (fileWriter) {
-
-			fileWriter.onwriteend = function() {
-				console.log("Successful file write...");
-				readFile(fileEntry);
-			};
-
-			fileWriter.onerror = function (e) {
-				console.log("Failed file write: " + e.toString());
-			};
-
-			// If data object is not passed in,
-			// create a new Blob instead.
-			if (!dataObj) {
-				dataObj = new Blob(['some file data'], { type: 'text/plain' });
-			}
-
-			fileWriter.write(dataObj);
-		});
-	}
-	function readFile(fileEntry) {
-		fileEntry.file(function (file) {
-			var reader = new FileReader();
-
-			reader.onloadend = function() {
-				console.log("Successful file read: " + this.result);
-				displayFileData(fileEntry.fullPath + ": " + this.result);
-			};
-
-			reader.readAsText(file);
-
-		}, onErrorReadFile);
-	}
-	function requestFS() {
-		return window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fs) {
-
-			console.log('file system open: ' + fs.name);
-			fs.files.getFile("test.txt", { create: true, exclusive: false }, function (fileEntry) {
-
-				console.log("fileEntry is file?" + fileEntry.isFile.toString());
-				// fileEntry.name == 'someFile.txt'
-				// fileEntry.fullPath == '/someFile.txt'
-				writeFile(fileEntry, null);
-
-			}, onErrorCreateFile);
-
-		}, onErrorLoadFs);
-	}
-	window.addEventListener('filePluginIsReady',requestFS(),false);
-	//*/
 });
