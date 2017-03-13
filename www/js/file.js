@@ -1,5 +1,6 @@
 	//PhoneGap file API implementation
 //	/*
+(function(){
 	function onErrorReadFile() {
 		console.log('Unable to read file');
 	}
@@ -9,6 +10,7 @@
 	function onErrorCreateFile() {
 		console.log('Unable to create file');
 	}
+	
 	function writeFile(fileEntry, dataObj, isAppend) {
 		// Create a FileWriter object for our FileEntry (log.txt).
 		fileEntry.createWriter(function (fileWriter) {
@@ -68,7 +70,7 @@
 		window.requestFileSystem(window.PERSISTENT, 0, function (fs) {
 
 			console.log('file system open: ' + fs.name);
-			createFile(fs.root, "newTempFile.txt", false);
+			createFile(fs.root, "newFile.txt", false);
 
 		}, onErrorLoadFs);
 		window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function (dirEntry) {
@@ -79,7 +81,9 @@
 	}
 	
 	window.addEventListener('filePluginIsReady',requestFS(),false);
-	//*/
+})();
+//	*/
+	/*
 	function fail(error) {
 		console.log("error : "+error.code);
 	}
@@ -106,3 +110,25 @@
 	}
 
 	document.addEventListener("deviceready", onDeviceReady, false);
+	*/
+	//v3 of File API (Follows guidelines from the official apache cordova project documentation)
+/*
+(function(){
+	function fail(error) {
+		throw "error : " + error.code;
+	}
+	function gotDirectory(dir) {
+		dir.getFile();
+	}
+	function gotFileSys(entry) {
+		entry.getDirectory("cdvfile:///Android/data/com.wave.scouting/files",{create: true, exclusive: false}, gotDirectory,fail);
+	}
+	function getFileSys() {
+		window.resolveLocalFileSystem(LocalFileSystem.PERSISTENT, 0, gotFileSys, fail);
+	}
+	function onDeviceReady() {
+		getFileSys();
+	}
+	window.addEventListener('ondeviceready',onDeviceReady,false);
+});
+*/
