@@ -1,6 +1,7 @@
 	//PhoneGap file API implementation
 //	/*
 (function(){
+	var JQ = jQuery.noConflict();
 	function onErrorReadFile() {
 		console.log('Unable to read file');
 	}
@@ -66,21 +67,26 @@
 
 		}, onErrorReadFile);
 	}
-	function requestFS() {
+	function requestFS(event) {
 //		window.requestFileSystem(window.PERSISTENT, 0, function (fs) {
 //
 //			console.log('file system open: ' + fs.name);
 //			createFile(fs.root, "newFile.txt", false);
 //
 //		}, onErrorLoadFs);
-		window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function (dirEntry) {
+		window.resolveLocalFileSystemURL(cordova.file.externalDataDirectory, function (dirEntry) {
 			console.log('file system open: ' + dirEntry.name);
 			var isAppend = true;
 			createFile(dirEntry, fileName, isAppend);
 		}, onErrorLoadFs);
+//		var storage = window.localStorage;
+//		event.preventDefault();
+//		var value = $('').attr('id');
+//		storage.setItem("key",value);
+//		document.write(value);
 	}
 	
-	window.addEventListener('filePluginIsReady',requestFS(),false);
+	window.addEventListener('deviceready',requestFS(),false);
 })();
 //	*/
 	/*
@@ -118,7 +124,7 @@
 		throw "error : " + error.code;
 	}
 	function gotDirectory(dir) {
-		dir.getFile();
+		dir.localStorage.setItem("");
 	}
 	function gotFileSys(entry) {
 		entry.getDirectory("cdvfile:///Android/data/com.wave.scouting/files",{create: true, exclusive: false}, gotDirectory,fail);
