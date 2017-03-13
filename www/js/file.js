@@ -86,7 +86,7 @@
 //		document.write(value);
 	}
 	
-	window.addEventListener('deviceready',requestFS(),false);
+	window.addEventListener('deviceready',requestFS,false);
 })();
 //	*/
 	/*
