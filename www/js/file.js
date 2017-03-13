@@ -67,12 +67,12 @@
 		}, onErrorReadFile);
 	}
 	function requestFS() {
-		window.requestFileSystem(window.PERSISTENT, 0, function (fs) {
-
-			console.log('file system open: ' + fs.name);
-			createFile(fs.root, "newFile.txt", false);
-
-		}, onErrorLoadFs);
+//		window.requestFileSystem(window.PERSISTENT, 0, function (fs) {
+//
+//			console.log('file system open: ' + fs.name);
+//			createFile(fs.root, "newFile.txt", false);
+//
+//		}, onErrorLoadFs);
 		window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function (dirEntry) {
 			console.log('file system open: ' + dirEntry.name);
 			var isAppend = true;
