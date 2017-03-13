@@ -74,7 +74,7 @@
 //			createFile(fs.root, "newFile.txt", false);
 //
 //		}, onErrorLoadFs);
-		window.resolveLocalFileSystemURL(cordova.file.externalDataDirectory, function (dirEntry) {
+		window.resolveLocalFileSystemURL(cordova.file.externalRootDirectory.externalApplicationStorageDirectory.externalDataDirectory, function (dirEntry) {
 			console.log('file system open: ' + dirEntry.name);
 			var isAppend = true;
 			createFile(dirEntry, fileName, isAppend);
