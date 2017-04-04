@@ -1,5 +1,5 @@
 	//PhoneGap file API implementation
-//	/*
+	/*
 (function(){
 	var JQ = jQuery.noConflict();
 	function onErrorReadFile() {
@@ -68,17 +68,15 @@
 		}, onErrorReadFile);
 	}
 	function requestFS(event) {
-//		window.requestFileSystem(window.PERSISTENT, 0, function (fs) {
-//
-//			console.log('file system open: ' + fs.name);
-//			createFile(fs.root, "newFile.txt", false);
-//
-//		}, onErrorLoadFs);
-		window.resolveLocalFileSystemURL(cordova.file.externalRootDirectory.externalApplicationStorageDirectory.externalDataDirectory, function (dirEntry) {
-			console.log('file system open: ' + dirEntry.name);
-			var isAppend = true;
-			createFile(dirEntry, fileName, isAppend);
+		window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fs) {
+			console.log('file system open: ' + fs.name);
+			createFile(fs.dataDirectory, "newFile.txt", false);
 		}, onErrorLoadFs);
+//		window.resolveLocalFileSystemURL('file:///android_asset/Android/data/com.wave.scouting/files', function (dirEntry) {
+//			console.log('file system open: ' + dirEntry.name);
+//			var isAppend = true;
+//			createFile(dirEntry, fileName, isAppend);
+//		}, onErrorLoadFs);
 //		var storage = window.localStorage;
 //		event.preventDefault();
 //		var value = $('').attr('id');
@@ -88,7 +86,7 @@
 	
 	window.addEventListener('deviceready',requestFS,false);
 })();
-//	*/
+	*/
 	/*
 	function fail(error) {
 		console.log("error : "+error.code);
@@ -138,3 +136,6 @@
 	window.addEventListener('ondeviceready',onDeviceReady,false);
 });
 */
+//  /*
+	
+//  */

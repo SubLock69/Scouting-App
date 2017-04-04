@@ -214,6 +214,28 @@ JC(function(){
 			tableJSON(true);
 		},(timer * 1000));
 	};
+	function toCSV(JSON) {
+		clearInterval(autosave);
+		autosave = null;
+		//Write to local storage
+		var ls = window.localStorage, csv = "Name,Match,Team,Alliance,Gears in Auto,Gears in Teleop,Climbed,Balls in Auto,Balls in Teleop,Mobile\n";
+		for(var csjson in tableJSON.JSON) {
+			csv += csjson + ",";
+			if(tableJSON.JSON[csjson] === "mobile") {
+				csv += "\n";
+			}
+		}
+		ls.setItem('table',csv);
+		autosaveTimer();
+	}
+	function toTextFile(TEXT) {
+		clearInterval(autosave);
+		autosave = null;
+		//Write to local storage
+		var ls = window.localStorage;
+		ls.setItem('text',TEXT);
+		autosaveTimer();
+	}
 	function tableJSON(noValidate) {
 		clearInterval(autosave);
 		autosave = null;
@@ -347,27 +369,15 @@ JC(function(){
 			//Compile Notes and Comments differently, will export into text file separately
 			this.NC = ("Auto Notes & Comments:\n\n" + autoNC.value + "\n\nTele-op Notes & Comments:\n\n" + teleNC.value);
 			console.log(this.JSON);
+			window.localStorage.setItem('json',JSON.stringify(this.JSON));
+			window.localStorage.setItem('notes',JSON.stringify(this.NC));
 			toCSV(this.JSON);
 			toTextFile(this.NC);
 			autosaveTimer();
 			return;
 		}
 	}
-	function toCSV(JSON) {
-		clearInterval(autosave);
-		autosave = null;
-		var fs = requestFS();
-		var CSV = "";
-		writeFile(fs.files.getFile("match_" + tableJSON.JSON.match + "_team_" + tableJSON.JSON.team + ".csv",{create: true, exclusive: false}),CSV);
-		autosaveTimer();
-	}
-	function toTextFile(TEXT) {
-		clearInterval(autosave);
-		autosave = null;
-		var fs = requestFS();
-		writeFile(fs.files.getFile("match_" + tableJSON.JSON.match + "_team_" + tableJSON.JSON.team + "_NC.txt",{create: true, exclusive: false}),tableJSON.NC);
-		autosaveTimer();
-	}
+	
 	function countUp(elem,floor,ceil) {
 		var num = document.getElementById(elem).textContent;
 		if(num < floor) {
